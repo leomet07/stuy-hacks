@@ -152,13 +152,13 @@ signupForm.addEventListener("submit", function (e) {
     const email = signupForm["signup-email"].value;
     const password = signupForm["signup-password"].value;
     const username = signupForm["signup-username"].value;
-    const emerphone = signupForm["signup-emerphone"].value;
+    const emerphones = (signupForm["signup-emerphone"].value).split(" ");
     const medical = signupForm["signup-medical"].value;
     const realname = signupForm["signup-realname"].value;
 
     //console.log("jd");
     console.log(username);
-    console.log(emerphone, medical)
+    console.log(emerphones, medical)
     console.log(email, password);
 
     // sign up the user
@@ -180,13 +180,19 @@ signupForm.addEventListener("submit", function (e) {
         console.log("add");
         firebase.database().ref().child("users").child(global_user.uid).set({
             user_name: current_user_name,
-            emerphone: emerphone,
+            emerphone: emerphones,
             medical: medical,
             realname: realname
 
         }).catch((err) => {
             console.log("Could not add to db")
         })
+
+        //start at one bc we already added a 
+        for (let i = 0; i < emerphones.length; i++) {
+            let emerphones = emerphones[i]
+        }
+
 
 
 
@@ -227,14 +233,14 @@ help_request.addEventListener("click", (e) => {
 
 
     //ask for help
-    console.log("emerphone", emerphone)
+    console.log("emerphones", emerphones)
     let time = String(new Date())
     console.log(time)
     console.log("Help requested")
     firebase.database().ref().child("help").child(global_user.uid).set({
         status: true,
         user_name: current_user_name,
-        emerphone: emerphone,
+        emerphone: emerphones,
         medical: medical,
         realname: realname,
         time: time,
@@ -248,7 +254,7 @@ help_request.addEventListener("click", (e) => {
     //get the location
     getLocation()
 
-    send_sms(emerphone)
+    send_sms(emerphones)
 });
 
 
@@ -279,9 +285,9 @@ auth.onAuthStateChanged((user) => {
         firebaseheadingref.on("value", function (datasnapshot) {
             //console.log(datasnapshot.val());
             let data = datasnapshot.val()
-            //get emerphone
+            //get emerphones
 
-            emerphone = data[user.uid]["emerphone"]
+            emerphones = data[user.uid]["emerphone"]
             medical = data[user.uid]["medical"]
             current_user_name = data[user.uid]["user_name"]
             realname = data[user.uid]["realname"]
@@ -334,25 +340,37 @@ function test(position) {
 
 }
 
-function send_sms(num) {
+async function send_sms(emerphones_to_use) {
     console.log("sending sms")
+    for (let i = 0; i < emerphones_to_use.length; i++) {
+        console.log(emerphones_to_use[i])
 
-    var data = null;
+        var data = null;
 
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === this.DONE) {
-            console.log("Sucessfully sent an sms");
-        }
-    });
-    console.log(current_user_name)
-    xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=luv&to=" + num);
-    xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
-    xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
-    xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                console.log("Sucessfully sent an sms");
 
-    xhr.send(data);
+            }
+        });
 
+        let text_to_send = realname + " needs your help! Please contact them."
+        console.log(current_user_name)
+        xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + emerphones_to_use[0]);
+        xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
+        xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
+        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+        xhr.send(data);
+
+        await sleep(10000)
+
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
