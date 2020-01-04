@@ -257,7 +257,7 @@ help_request.addEventListener("click", (e) => {
         send_sms(emerphones[i])
 
     }
-    
+
 });
 
 
@@ -331,7 +331,7 @@ function test(position) {
     let lat = position.coords.latitude;
     let long = position.coords.longitude;
     //console.log(position.coords.latitude, position.coords.longitude);
-    document.getElementById("location").innerHTML = String(lat) + String(long);
+    document.getElementById("location").innerHTML = String(lat) + " " + String(long) + " are your lattitude and longtitude";
 
     firebase.database().ref().child("help").child(global_user.uid).child("long").set(long).catch((err) => {
         console.log("Could not upload longitude")
