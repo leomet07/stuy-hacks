@@ -293,11 +293,22 @@ auth.onAuthStateChanged((user) => {
 
 
 function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            console.log(position.coords.latitude, position.coords.longitude)
-        });
-    } else {
-        console.log("Location is not supported in this browser")
-    }
+
+
+    console.log(navigator.geolocation)
+    document.getElementById("location").innerHTML = "gay"
+    navigator.geolocation.getCurrentPosition(test);
+    //document.getElementById("location").innerHTML = "help"
+
+
+
+
+
+}
+
+function test(position) {
+    var lat = position.coords.latitude;
+    //console.log(position.coords.latitude, position.coords.longitude);
+    document.getElementById("location").innerHTML = "here";
+
 }
