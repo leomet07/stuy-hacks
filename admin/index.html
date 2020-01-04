@@ -1,0 +1,166 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+    <!--font awesome-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/a1ee4d6d1b.js" crossorigin="anonymous"></script>
+    <!-- THE bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="icon" type="image/png" href="https://github.com/leomet07/hackathon-sys/blob/master/img/favicon.png?raw=true" />
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="#"><i class="fas fa-heartbeat"></i> Life Saver</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="../"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-info-circle"></i> About</a>
+                        <a class="nav-item nav-link" href="/admin"><i class="fas fa-tools"></i> Admin Console</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-user-plus"></i> Register</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="container">
+        <div id="short_pass">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Short password! </strong> Password should be at least 6 characters
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="speedwarning">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> You should slow down
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="wrong_pwd">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> That's an incorrect
+                password you got there!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="no_user">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> This user doesn't exist!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <h3 id="username"></h3>
+        <h1 class="text-center">Emergencies list</h1>
+
+        <div id="emergencys"></div>
+
+        <div>
+            <button id="logout" class="logged-in btn btn-primary">Logout</button>
+        </div>
+
+        <form id="login-form">
+            <h2>Login</h2>
+            <div class="">
+                <input class="input-field" type="email" id="login-email" required />
+                <label for="login-email">Email address</label>
+            </div>
+            <div class="">
+                <input class="input-field" type="password" id="login-password" required />
+                <label for="login-password">Your password</label>
+            </div>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+
+        <form id="signup-form" autocomplete="off">
+            <h2>Sign up</h2>
+            <div class="">
+                <input class="input-field" type="email" id="signup-email" placeholder="Email Address" autocomplete="new-email" required />
+                
+            </div>
+            <div class="">
+                <input class="input-field" type="password" id="signup-password" placeholder="Password" autocomplete="new-password" required />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" id="signup-username" placeholder="Username" autocomplete="off" required />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" id="signup-emerphone" placeholder="Emergency Phone #" autocomplete="off" required />
+            </div>
+            <div class="">
+                <input type="text" placeholder="Medical Info" class="input-field" id="signup-medical" autocomplete="off" />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" id="signup-realname" placeholder="Real Name" autocomplete="off" />
+            </div>
+            <p id="status"></p>
+            <button class="btn btn-primary darken-2 z-depth-0">Submit</button>
+        </form>
+    </main>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+
+
+    
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+    -->
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCARN7Ifxjl0n9tPrHk5n4VrHiC89KPbs8",
+            authDomain: "hackathon-261723.firebaseapp.com",
+            databaseURL: "https://hackathon-261723.firebaseio.com",
+            projectId: "hackathon-261723",
+            storageBucket: "hackathon-261723.appspot.com",
+            messagingSenderId: "904869270004",
+            appId: "1:904869270004:web:c07288ffc05ec49de529a1"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+    <!--<script src="quiz.js"></script>-->
+    <script src="admin.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

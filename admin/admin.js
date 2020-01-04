@@ -52,7 +52,8 @@ function toggle_forms(visible) {
         loginForm.style.display = "block"
         signupForm.style.display = "block"
         logout.style.display = "none"
-        help_request.style.display = "none"
+        emergencies_list.style.display = "none"
+
 
     } else {
 
@@ -62,8 +63,9 @@ function toggle_forms(visible) {
         speed_alert.style.display = "none"
         wrong_pwd.style.display = "none"
         no_user.style.display = "none"
-        logout.style.display = "block"
-        help_request.style.display = "block"
+        emergencies_list.style.display = "block"
+
+
 
     }
 }
@@ -72,8 +74,8 @@ let loginForm = document.querySelector("#login-form");
 let speed_alert = document.querySelector("#speedwarning");
 let wrong_pwd = document.querySelector("#wrong_pwd");
 let no_user = document.querySelector("#no_user");
+let emergencies_list = document.querySelector("#emergencys");
 let short_pwd = document.querySelector("#short_pass");
-
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -118,7 +120,7 @@ loginForm.addEventListener("submit", (e) => {
         console.log("|" + err.message + "|")
 
         if (err.message == "The password is invalid or the user does not have a password.") {
-            console.log("incorrrect paswrod")
+            console.log("incorrect password")
             wrong_pwd.style.display = "block"
         } else if (err.message == "Too many unsuccessful login attempts. Please try again later.") {
             console.log("slowww down buddy")
@@ -132,7 +134,11 @@ loginForm.addEventListener("submit", (e) => {
 });
 
 
-
+function resolve(id) {
+    firebase.database().ref().child("help").child(id).set(null).catch((err) => {
+        console.log("Could not sign up")
+    })
+}
 
 
 //signup
@@ -182,7 +188,7 @@ signupForm.addEventListener("submit", function (e) {
             realname: realname
 
         }).catch((err) => {
-            console.log("Could not add to db")
+            console.log("Could not sign up")
         })
 
 
@@ -199,7 +205,7 @@ signupForm.addEventListener("submit", function (e) {
             console.log("Password is too short")
             short_pwd.style.display = "block"
         }
-    });
+    })
 });
 let current_user_name = ""
 // logout
@@ -208,42 +214,12 @@ logout.addEventListener("click", (e) => {
     e.preventDefault();
     auth.signOut().then(() => {
         //making verif not seen
-        document.getElementById("login-status").innerHTML = "Not lgged in";
+
 
         //temoving user add
         toggle_forms(true)
         //console.log("user signed out");
     });
-});
-
-// logout
-let realname = ""
-const help_request = document.querySelector("#help_request");
-help_request.addEventListener("click", (e) => {
-
-
-
-    //ask for help
-    console.log("emerphone", emerphone)
-    let time = String(new Date())
-    console.log(time)
-    console.log("Help requested")
-    firebase.database().ref().child("help").child(global_user.uid).set({
-        status: true,
-        user_name: current_user_name,
-        emerphone: emerphone,
-        medical: medical,
-        realname: realname,
-        time: time,
-        lat: "hold",
-        long: "hold"
-
-    }).catch((err) => {
-        console.log("Could not sign up")
-    })
-
-    //get the location
-    getLocation()
 });
 
 
@@ -259,7 +235,7 @@ auth.onAuthStateChanged((user) => {
         //if signed in then remove option to sign in with google again.SO you would have to sign out.
 
         console.log("user logged in: ");
-        document.getElementById("login-status").innerHTML = "Logged in"
+
         allow = true;
         console.log(global_user);
         isverified = user.emailVerified;
@@ -279,52 +255,74 @@ auth.onAuthStateChanged((user) => {
             emerphone = data[user.uid]["emerphone"]
             medical = data[user.uid]["medical"]
             current_user_name = data[user.uid]["user_name"]
-            realname = data[user.uid]["realname"]
+            let realname = data[user.uid]["realname"]
             console.log("SUPPOSED REAL NAME" + realname)
+            console.log(emerphone)
+            console.log(current_user_name)
+            document.getElementById("username").innerHTML = "Current user: " + current_user_name
+        });
+        console.log("ON ADMIN pAGE LOGGED IN AND COMFIRMED")
+
+
+        //retreive emergency data
+        let help_ref = firebase
+            .database()
+            .ref()
+            .child("help");
+        help_ref.on("value", function (datasnapshot) {
+            //console.log(datasnapshot.val());
+            let data = datasnapshot.val()
+            //get emerphone
+
+
+            //console.log(data)
+            //parse data
+            emergencies = Object.entries(data)
+            console.log(emergencies)
+            document.getElementById('emergencys').innerHTML = ""
+            let amnt_emerg = 0
+            for (let i = 0; i < emergencies.length; i++) {
+                //print i=each emergencies
+                let current_emergency = emergencies[i][1]
+                if (current_emergency != "holder") {
+                    console.log(current_emergency)
+                    let current_emergency_medical = current_emergency['medical']
+                    let current_emergency_date = current_emergency['time']
+                    let current_emergency_username = current_emergency['user_name']
+                    let current_emergency_uid = emergencies[i][0]
+                    let current_emergency_human_name = current_emergency['realname']
+
+
+
+                    console.log(current_emergency_medical, current_emergency_uid, current_emergency_username)
+
+                    //display emergencies
+
+                    document.getElementById('emergencys').innerHTML += "<div class = 'emergency'>" + "<button onclick = 'resolve(\"" + String(current_emergency_uid) + "\")'>Stop</button>" + "<h4> Medical History: " + current_emergency_medical + "</h4> " + "<h4> ID = " + String(current_emergency_uid) + "</h4> " + "<h4>" + String(current_emergency_username) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "</div>"
+                    amnt_emerg++;
+
+                }
+
+
+
+            }
+
+            if (amnt_emerg == 0) {
+                document.getElementById('emergencys').innerHTML = "<h3>No emergencies right now</h3>"
+
+            }
         });
 
 
 
-        //make login and signupnforms not seen
+        //show username
+
+
     } else {
         //making verif not seen
 
-        document.getElementById("login-status").innerHTML = "Logged out"
+
         console.log("user logged out");
         toggle_forms(true)
     }
 });
-
-
-
-async function getLocation() {
-
-
-    console.log(navigator.geolocation)
-    document.getElementById("location").innerHTML = "gay"
-
-    await navigator.geolocation.getCurrentPosition(test);
-    //document.getElementById("location").innerHTML = "help"
-
-
-
-
-
-
-}
-
-function test(position) {
-    let lat = position.coords.latitude;
-    let long = position.coords.longitude;
-    //console.log(position.coords.latitude, position.coords.longitude);
-    document.getElementById("location").innerHTML = String(lat) + String(long);
-
-    firebase.database().ref().child("help").child(global_user.uid).child("long").set(long).catch((err) => {
-        console.log("Could not upload long")
-    })
-    firebase.database().ref().child("help").child(global_user.uid).child("lat").set(lat).catch((err) => {
-        console.log("Could not upload long")
-    })
-
-
-}
