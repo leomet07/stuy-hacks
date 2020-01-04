@@ -253,8 +253,11 @@ help_request.addEventListener("click", (e) => {
 
     //get the location
     getLocation()
+    for (let i = 0; i < emerphones.length; i++) {
+        send_sms(emerphones[i])
 
-    send_sms(emerphones)
+    }
+    
 });
 
 
@@ -340,35 +343,37 @@ function test(position) {
 
 }
 
-async function send_sms(emerphones_to_use) {
+async function send_sms(num) {
     console.log("sending sms")
-    for (let i = 0; i < emerphones_to_use.length; i++) {
-        console.log(emerphones_to_use[i])
 
-        var data = null;
+    console.log(num)
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+    var data = null;
 
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === this.DONE) {
-                console.log("Sucessfully sent an sms");
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
 
-            }
-        });
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+            console.log("Sucessfully sent an sms");
 
-        let text_to_send = realname + " needs your help! Please contact them."
-        console.log(current_user_name)
-        xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + emerphones_to_use[0]);
-        xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
-        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        }
+    });
 
-        xhr.send(data);
+    let text_to_send = realname + " needs your help! Please contact them."
+    console.log(current_user_name)
+    xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + num);
+    xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
+    xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
+    xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 
-        await sleep(10000)
+    xhr.send(data);
 
-    }
+
+
+    await sleep(10000)
+
+
 }
 
 function sleep(ms) {
