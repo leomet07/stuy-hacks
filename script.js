@@ -231,7 +231,7 @@ logout.addEventListener("click", (e) => {
 // logout
 let realname = ""
 const help_request = document.querySelector("#help_request");
-help_request.addEventListener("click", (e) => {
+help_request.addEventListener("click", async function (e) {
 
 
 
@@ -252,14 +252,15 @@ help_request.addEventListener("click", (e) => {
 
     }).catch((err) => {
         console.log("Could not sign up")
-    })
+    });
 
     //get the location
-    getLocation()
+    test = await getLocation()
+    
     for (let i = 0; i < emerphones.length; i++) {
         send_sms(emerphones[i])
-
     }
+
 
 });
 
@@ -322,14 +323,11 @@ async function getLocation() {
 
     await navigator.geolocation.getCurrentPosition(test);
     //document.getElementById("location").innerHTML = "help"
-
-
-
-
+    return "holder for async"
 
 
 }
-
+let adress_local = ""
 async function test(position) {
     let lat = position.coords.latitude;
     let long = position.coords.longitude;
@@ -347,7 +345,7 @@ async function test(position) {
     let response = await fetch("https://api.opencagedata.com/geocode/v1/json?q=" + lat + "+" + long + "&key=fa975c3de924416aa05d3e590a3caa19");
     let json = await response.json()
 
-    let address_local = json.results[0].formatted
+    address_local = json.results[0].formatted
     console.log(address_local)
 
     document.getElementById("adress").innerHTML = address_local
@@ -376,8 +374,8 @@ async function send_sms(num) {
         }
     });
 
-    let text_to_send = realname + " needs your help! Please contact them."
-    console.log(current_user_name)
+    let text_to_send = realname + " needs your help! Please contact them. Last known location was " + adress_local
+    console.log(adress_local)
     xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + num);
     xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
     xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
