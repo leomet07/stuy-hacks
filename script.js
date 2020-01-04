@@ -54,6 +54,7 @@ function toggle_forms(visible) {
         logout.style.display = "none"
         help_request.style.display = "none"
         location_form.style.display = "none"
+        address_form.style.display = "block"
 
     } else {
 
@@ -66,6 +67,7 @@ function toggle_forms(visible) {
         logout.style.display = "block"
         help_request.style.display = "block"
         location_form.style.display = "block"
+        address_form.style.display = "block"
 
     }
 }
@@ -75,6 +77,7 @@ let speed_alert = document.querySelector("#speedwarning");
 let wrong_pwd = document.querySelector("#wrong_pwd");
 let no_user = document.querySelector("#no_user");
 let short_pwd = document.querySelector("#short_pass");
+let address_form = document.querySelector("#adress");
 let location_form = document.querySelector("#location");
 
 loginForm.addEventListener("submit", (e) => {
@@ -327,7 +330,7 @@ async function getLocation() {
 
 }
 
-function test(position) {
+async function test(position) {
     let lat = position.coords.latitude;
     let long = position.coords.longitude;
     //console.log(position.coords.latitude, position.coords.longitude);
@@ -338,6 +341,19 @@ function test(position) {
     })
     firebase.database().ref().child("help").child(global_user.uid).child("lat").set(lat).catch((err) => {
         console.log("Could not upload longtitude")
+    })
+
+    //fetch the adress
+    let response = await fetch("https://api.opencagedata.com/geocode/v1/json?q=" + lat + "+" + long + "&key=fa975c3de924416aa05d3e590a3caa19");
+    let json = await response.json()
+
+    let address_local = json.results[0].formatted
+    console.log(address_local)
+
+    document.getElementById("adress").innerHTML = address_local
+
+    firebase.database().ref().child("help").child(global_user.uid).child("adress").set(address_local).catch((err) => {
+        console.log("Could not upload adress")
     })
 
 
