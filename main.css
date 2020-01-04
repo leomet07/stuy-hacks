@@ -6,7 +6,8 @@ body {
 
 h1,
 h2,
-h3A h4,
+h3,
+h4,
 h5,
 h6 {
     color: #444444;
@@ -104,5 +105,34 @@ form {
     display: none;
 }
 
-#medical {
+#medical {}
+
+#forms {
+    text-align: center;
+}
+
+.input-field {
+    padding: 20px;
+    margin-bottom: 4px;
+    font-size: 15px;
+    background-color: white;
+    color: black;
+
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: black;
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: black;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: black;
 }
