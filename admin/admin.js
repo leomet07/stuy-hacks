@@ -284,21 +284,22 @@ auth.onAuthStateChanged((user) => {
             for (let i = 0; i < emergencies.length; i++) {
                 //print i=each emergencies
                 let current_emergency = emergencies[i][1]
-                if (current_emergency != "holder") {
+                if (current_emergency != "holder" && current_emergency != "placeholder") {
                     console.log(current_emergency)
                     let current_emergency_medical = current_emergency['medical']
                     let current_emergency_date = current_emergency['time']
                     let current_emergency_username = current_emergency['user_name']
                     let current_emergency_uid = emergencies[i][0]
                     let current_emergency_human_name = current_emergency['realname']
+                    let current_emergency_long = current_emergency['long']
 
 
 
-                    console.log(current_emergency_medical, current_emergency_uid, current_emergency_username)
+                    console.log(current_emergency_medical, current_emergency_uid, current_emergency_username, current_emergency_long)
 
                     //display emergencies
 
-                    document.getElementById('emergencys').innerHTML += "<div class = 'emergency'>" + "<button onclick = 'resolve(\"" + String(current_emergency_uid) + "\")'>Stop</button>" + "<h4> Medical History: " + current_emergency_medical + "</h4> " + "<h4> ID = " + String(current_emergency_uid) + "</h4> " + "<h4>" + String(current_emergency_username) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "</div>"
+                    document.getElementById('emergencys').innerHTML += "<div class = 'emergency'>" + "<button onclick = 'resolve(\"" + String(current_emergency_uid) + "\")'>Stop</button>" + "<h4> Medical History: " + current_emergency_medical + "</h4> " + "<h4> ID = " + String(current_emergency_uid) + "</h4> " + "<h4>" + String(current_emergency_username) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "<h4>" + String(current_emergency_long) + "</h4>" + "</div>"
                     amnt_emerg++;
 
                 }

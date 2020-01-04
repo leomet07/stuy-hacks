@@ -301,7 +301,7 @@ async function getLocation() {
 
 
     console.log(navigator.geolocation)
-    document.getElementById("location").innerHTML = "gay"
+
 
     await navigator.geolocation.getCurrentPosition(test);
     //document.getElementById("location").innerHTML = "help"
