@@ -256,10 +256,8 @@ help_request.addEventListener("click", async function (e) {
 
     //get the location
     test = await getLocation()
-    
-    for (let i = 0; i < emerphones.length; i++) {
-        send_sms(emerphones[i])
-    }
+
+
 
 
 });
@@ -313,7 +311,13 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
+async function send_all(phones, all_adress_local) {
+    console.log(all_adress_local)
+    for (let i = 0; i < phones.length; i++) {
+        send_sms(phones[i], all_adress_local)
+    }
 
+}
 
 async function getLocation() {
 
@@ -323,7 +327,8 @@ async function getLocation() {
 
     await navigator.geolocation.getCurrentPosition(test);
     //document.getElementById("location").innerHTML = "help"
-    return "holder for async"
+
+
 
 
 }
@@ -345,10 +350,11 @@ async function test(position) {
     let response = await fetch("https://api.opencagedata.com/geocode/v1/json?q=" + lat + "+" + long + "&key=fa975c3de924416aa05d3e590a3caa19");
     let json = await response.json()
 
-    address_local = json.results[0].formatted
-    console.log(address_local)
+    let new_address_local = json.results[0].formatted
+    console.log(new_address_local)
+    send_all(emerphones, new_address_local)
 
-    document.getElementById("adress").innerHTML = address_local
+    document.getElementById("adress").innerHTML = new_address_local
 
     firebase.database().ref().child("help").child(global_user.uid).child("adress").set(address_local).catch((err) => {
         console.log("Could not upload adress")
@@ -357,7 +363,7 @@ async function test(position) {
 
 }
 
-async function send_sms(num) {
+async function send_sms(num, sms_adress_local) {
     console.log("sending sms")
 
     console.log(num)
@@ -374,7 +380,7 @@ async function send_sms(num) {
         }
     });
 
-    let text_to_send = realname + " needs your help! Please contact them. Last known location was " + adress_local
+    let text_to_send = realname + " needs your help! Please contact them. Last known location was " + sms_adress_local
     console.log(adress_local)
     xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + num);
     xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
