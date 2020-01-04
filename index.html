@@ -1,0 +1,186 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/a1ee4d6d1b.js" crossorigin="anonymous"></script>
+    <!-- THE bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <title>Go away STOP</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="icon" type="image/png"
+        href="https://github.com/leomet07/hackathon-sys/blob/master/img/favicon.png?raw=true" />
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="#"><i class="fas fa-heartbeat"></i> Life saver</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-info-circle"></i> About</a>
+                        <a class="nav-item nav-link" href="/admin"><i class="fas fa-tools"></i> Admin Console</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a class="nav-item nav-link" href="#"><i class="fas fa-user-plus"></i> Register</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="container">
+        <div id="short_pass">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Short password! </strong> Password should be at least 6 characters
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="speedwarning">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Slow down</strong> You should slow down and try
+                again.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="wrong_pwd">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Incorrect Password</strong> Please try again
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="no_user">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>This user doesn't exist!</strong>Maybe you meant to
+                create an account?
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+
+
+        <h1 class="text-center">Request Help</h1>
+
+        <h3 id="login-status"></h3>
+        <button id="logout" class="logged-in btn yellow darken-2 z-depth-0">
+            Logout
+        </button>
+        <button id="help_request" class="logged-in btn btn-danger darken-2 z-depth-0" style="display: block;
+                width: 100%;
+                border: none;
+                
+                padding: 14px 28px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;">
+            HELP!!
+        </button>
+        <form id="login-form">
+            <h2>Login</h2>
+            <div class="">
+                <input class="input-field" type="email" id="login-email" placeholder="Email" required />
+            </div>
+            <div class="">
+                <input class="input-field" type="password" placeholder="Password" id="login-password" required />
+            </div>
+            <button class="btn btn-primary darken-2 z-depth-0">
+                Submit
+            </button>
+        </form>
+
+        <form id="signup-form" autocomplete="off">
+            <h2>Sign up</h2>
+            <div class="">
+                <input class="input-field" placeholder="Email Address" type="email" id="signup-email"
+                    autocomplete="new-email" required />
+            </div>
+            <div class="">
+                <input class="input-field" placeholder="Password" type="password" id="signup-password"
+                    autocomplete="new-password" required />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" placeholder="Username" id="signup-username" autocomplete="off"
+                    required />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" placeholder="Phone Number" id="signup-emerphone"
+                    autocomplete="off" required />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" placeholder="Important Medical Info" id="signup-medical"
+                    autocomplete="off" />
+            </div>
+            <div class="">
+                <input type="text" class="input-field" placeholder="Real Name" id="signup-realname"
+                    autocomplete="off" />
+            </div>
+            <p id="status"></p>
+            <button class="btn btn-primary darken-2 z-depth-0">
+                Submit
+            </button>
+        </form>
+    </main>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+
+
+    
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+    -->
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAt4JfsbELagSUETbDL_cDQCKE1YozWRoU",
+            authDomain: "stuy-hacks-jan2020.firebaseapp.com",
+            databaseURL: "https://stuy-hacks-jan2020.firebaseio.com",
+            projectId: "stuy-hacks-jan2020",
+            storageBucket: "stuy-hacks-jan2020.appspot.com",
+            messagingSenderId: "93645627147",
+            appId: "1:93645627147:web:eadbed12dbfeb912e10c0e"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+    <!--<script src="quiz.js"></script>-->
+    <script src="script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
+475D783003@RACKID78M475           that's the wifi
