@@ -53,6 +53,7 @@ function toggle_forms(visible) {
         signupForm.style.display = "block"
         logout.style.display = "none"
         help_request.style.display = "none"
+        location_form.style.display = "none"
 
     } else {
 
@@ -64,6 +65,7 @@ function toggle_forms(visible) {
         no_user.style.display = "none"
         logout.style.display = "block"
         help_request.style.display = "block"
+        location_form.style.display = "block"
 
     }
 }
@@ -73,6 +75,7 @@ let speed_alert = document.querySelector("#speedwarning");
 let wrong_pwd = document.querySelector("#wrong_pwd");
 let no_user = document.querySelector("#no_user");
 let short_pwd = document.querySelector("#short_pass");
+let location_form = document.querySelector("#location");
 
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -244,10 +247,12 @@ help_request.addEventListener("click", (e) => {
 
     //get the location
     getLocation()
+
+    send_sms(emerphone)
 });
 
 
-
+let global_user = null;
 // listen for auth status changes
 auth.onAuthStateChanged((user) => {
     if (user) {
@@ -320,11 +325,34 @@ function test(position) {
     document.getElementById("location").innerHTML = String(lat) + String(long);
 
     firebase.database().ref().child("help").child(global_user.uid).child("long").set(long).catch((err) => {
-        console.log("Could not upload long")
+        console.log("Could not upload longitude")
     })
     firebase.database().ref().child("help").child(global_user.uid).child("lat").set(lat).catch((err) => {
-        console.log("Could not upload long")
+        console.log("Could not upload longtitude")
     })
 
+
+}
+
+function send_sms(num) {
+    console.log("sending sms")
+
+    var data = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+            console.log("Sucessfully sent an sms");
+        }
+    });
+    console.log(current_user_name)
+    xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=luv&to=" + num);
+    xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
+    xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
+    xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+    xhr.send(data);
 
 }
