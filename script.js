@@ -221,8 +221,7 @@ let realname = ""
 const help_request = document.querySelector("#help_request");
 help_request.addEventListener("click", (e) => {
 
-    //get the location
-    getLocation()
+
 
     //ask for help
     console.log("emerphone", emerphone)
@@ -235,11 +234,16 @@ help_request.addEventListener("click", (e) => {
         emerphone: emerphone,
         medical: medical,
         realname: realname,
-        time: time
+        time: time,
+        lat: "hold",
+        long: "hold"
 
     }).catch((err) => {
         console.log("Could not sign up")
     })
+
+    //get the location
+    getLocation()
 });
 
 
@@ -292,13 +296,16 @@ auth.onAuthStateChanged((user) => {
 });
 
 
-function getLocation() {
+
+async function getLocation() {
 
 
     console.log(navigator.geolocation)
     document.getElementById("location").innerHTML = "gay"
-    navigator.geolocation.getCurrentPosition(test);
+
+    await navigator.geolocation.getCurrentPosition(test);
     //document.getElementById("location").innerHTML = "help"
+
 
 
 
@@ -307,8 +314,17 @@ function getLocation() {
 }
 
 function test(position) {
-    var lat = position.coords.latitude;
+    let lat = position.coords.latitude;
+    let long = position.coords.longitude;
     //console.log(position.coords.latitude, position.coords.longitude);
-    document.getElementById("location").innerHTML = "here";
+    document.getElementById("location").innerHTML = String(lat) + String(long);
+    /*
+    firebase.database().ref().child("help").child(global_user.uid).child("long").set(long).catch((err) => {
+        console.log("Could not upload long")
+    })
+    firebase.database().ref().child("help").child(global_user.uid).child("lat").set(lat).catch((err) => {
+        console.log("Could not upload long")
+    })
+    */
 
 }
