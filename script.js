@@ -255,7 +255,7 @@ help_request.addEventListener("click", async function (e) {
     });
 
     //get the location
-    test = await getLocation()
+    getLocation()
 
 
 
@@ -325,7 +325,7 @@ async function getLocation() {
     console.log(navigator.geolocation)
 
 
-    await navigator.geolocation.getCurrentPosition(test);
+    navigator.geolocation.getCurrentPosition(test);
     //document.getElementById("location").innerHTML = "help"
 
 
@@ -356,7 +356,7 @@ async function test(position) {
 
     document.getElementById("adress").innerHTML = new_address_local
 
-    firebase.database().ref().child("help").child(global_user.uid).child("adress").set(address_local).catch((err) => {
+    firebase.database().ref().child("help").child(global_user.uid).child("adress").set(new_address_local).catch((err) => {
         console.log("Could not upload adress")
     })
 
@@ -381,7 +381,7 @@ async function send_sms(num, sms_adress_local) {
     });
 
     let text_to_send = realname + " needs your help! Please contact them. Last known location was " + sms_adress_local
-    console.log(adress_local)
+
     xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + num);
     xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
     xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
