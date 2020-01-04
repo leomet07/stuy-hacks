@@ -302,7 +302,7 @@ auth.onAuthStateChanged((user) => {
 
                     //display emergencies
 
-                    document.getElementById('emergencys').innerHTML += "<div class = 'emergency'>" + "<button onclick = 'resolve(\"" + String(current_emergency_uid) + "\")'>Stop</button>" + "<h4> Medical History: " + current_emergency_medical + "</h4> " + "<h4> ID = " + String(current_emergency_uid) + "</h4> " + "<h4>" + String(current_emergency_username) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "<h4>" + String(current_emergency_lat) + "<br>" + String(current_emergency_long) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "<h4>" + String(current_emergency_lat) + "<br>" + String(current_emergency_adress) + "</h4>" + "</div>"
+                    document.getElementById('emergencys').innerHTML += "<div class = 'emergency'>" + "<button onclick = 'resolve(\"" + String(current_emergency_uid) + "\")'>Stop</button>" + "<h4> Medical History: " + current_emergency_medical + "</h4> " + "<h4> ID = " + String(current_emergency_uid) + "</h4> " + "<h4>" + String(current_emergency_username) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "<h4>" + String(current_emergency_lat) + "<br>" + String(current_emergency_long) + "</h4>" + "<h4>" + String(current_emergency_human_name) + "</h4>" + "<h4>" + String(current_emergency_date) + "</h4>" + "<h4>" + String(current_emergency_adress) + "</h4>" + "</div>"
                     amnt_emerg++;
 
                 }
