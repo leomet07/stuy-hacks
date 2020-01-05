@@ -55,6 +55,9 @@ function toggle_forms(visible) {
         help_request.style.display = "none"
         location_form.style.display = "none"
         address_form.style.display = "block"
+        profile_div.style.display = "none"
+        edit_btn.style.display = "none"
+        edit_form.style.display = "none"
 
     } else {
 
@@ -68,6 +71,9 @@ function toggle_forms(visible) {
         help_request.style.display = "block"
         location_form.style.display = "block"
         address_form.style.display = "block"
+        profile_div.style.display = "block"
+        edit_btn.style.display = "block"
+        edit_form.style.display = "none"
 
     }
 }
@@ -79,6 +85,9 @@ let no_user = document.querySelector("#no_user");
 let short_pwd = document.querySelector("#short_pass");
 let address_form = document.querySelector("#adress");
 let location_form = document.querySelector("#location");
+let profile_div = document.querySelector("#profile");
+let edit_btn = document.querySelector("#editbtn");
+let edit_form = document.querySelector("#editprofile");
 
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -316,7 +325,7 @@ auth.onAuthStateChanged(function (user) {
         //make login and signupnforms not seen
     } else {
         //making verif not seen
-
+        global_user = null
         document.getElementById("login-status").innerHTML = "Logged out"
         console.log("user logged out");
         toggle_forms(true)
@@ -410,4 +419,24 @@ async function send_sms(num, sms_adress_local) {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function toggle_edit_page() {
+    if (edit_form.style.display == "none") {
+        change_edit_form_view(true)
+    } else {
+        change_edit_form_view(false)
+    }
+
+}
+
+function change_edit_form_view(show) {
+    if (show) {
+        console.log("logged in")
+        edit_form.style.display = "block"
+    } else {
+        console.log("logged out")
+        edit_form.style.display = "none"
+    }
+
 }

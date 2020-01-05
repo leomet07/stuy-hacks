@@ -141,3 +141,11 @@ form {
     height: 12%;
 
 }
+
+#editprofile form {
+    display: block;
+}
+
+#editprofile {
+    display: block;
+}
