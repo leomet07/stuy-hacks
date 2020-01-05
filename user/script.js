@@ -265,7 +265,7 @@ help_request.addEventListener("click", async function (e) {
 
 let global_user = null;
 // listen for auth status changes
-auth.onAuthStateChanged(function (user) {
+auth.onAuthStateChanged((user) => {
     if (user) {
         //adding user read
 
@@ -293,18 +293,6 @@ auth.onAuthStateChanged(function (user) {
             //get emerphones
 
             emerphones = data[user.uid]["emerphone"]
-            //display all phone numbers
-            let emerphone_list = document.getElementById("emercontacts")
-            emerphone_list.innerHTML = ""
-            for (let i = 0; i < emerphones.length; i++) {
-                let phone = emerphones[i]
-
-                //display the phone
-                emerphone_list.innerHTML += "<li>" + phone + "</li>"
-
-            }
-
-            //display all contacts on user info change
             medical = data[user.uid]["medical"]
             current_user_name = data[user.uid]["user_name"]
             realname = data[user.uid]["realname"]
