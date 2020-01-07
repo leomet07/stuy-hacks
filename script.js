@@ -88,6 +88,7 @@ let location_form = document.querySelector("#location");
 let profile_div = document.querySelector("#profile");
 let edit_btn = document.querySelector("#editbtn");
 let edit_form = document.querySelector("#editprofile");
+let edit_form_vals = document.querySelector("#editforms")
 
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -383,6 +384,21 @@ async function test(position) {
 
 
 }
+let twilio_key = null;
+//define the twellio url
+
+firebase
+    .database()
+    .ref()
+    .child("keys").on("value", function (datasnapshot) {
+        //console.log(datasnapshot.val());
+        let data = datasnapshot.val()
+        //get twellio key
+
+        twilio_key = data['twelio']
+
+    });
+
 
 async function send_sms(num, sms_adress_local) {
     console.log("sending sms")
@@ -405,14 +421,14 @@ async function send_sms(num, sms_adress_local) {
 
     xhr.open("POST", "https://twilio-sms.p.rapidapi.com/2010-04-01/Accounts/a/Messages.json?from=18472784462&body=" + text_to_send + "&to=" + num);
     xhr.setRequestHeader("x-rapidapi-host", "twilio-sms.p.rapidapi.com");
-    xhr.setRequestHeader("x-rapidapi-key", "1b90a059e9msh255f25dd47d985ap16edbbjsnfc0254cf139c");
+    xhr.setRequestHeader("x-rapidapi-key", twilio_key);
     xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 
     xhr.send(data);
 
 
 
-    await sleep(10000)
+    await sleep(1000)
 
 
 }
@@ -432,11 +448,61 @@ function toggle_edit_page() {
 
 function change_edit_form_view(show) {
     if (show) {
-        console.log("logged in")
+        console.log("Displaying edit profile page")
         edit_form.style.display = "block"
     } else {
-        console.log("logged out")
+        console.log("Not displaying edit profile page")
         edit_form.style.display = "none"
     }
 
 }
+
+
+edit_form.addEventListener("submit", async function (e) {
+
+
+    console.log("going to edit")
+    //get all the vals
+    const username = edit_form_vals["profile-username"].value;
+    console.log("Username to change to: " + username)
+
+    if (username) {
+        current_user_name = username
+        firebase.database().ref().child("users").child(global_user.uid).child("user_name").set(current_user_name).catch((err) => {
+            console.log("Could not add to db")
+        })
+    } else {
+        console.log("username in profile edit form is null")
+    }
+
+
+    emerphones = (edit_form_vals["profile-emerphones"].value).split(" ");
+    console.log("Emerphones to change to: " + emerphones)
+
+    if (emerphones[0] != "") {
+
+        firebase.database().ref().child("users").child(global_user.uid).child("emerphone").set(emerphones).catch((err) => {
+            console.log("Could not add to db")
+        })
+    } else {
+        console.log("emerphones in profile edit form is null")
+    }
+    medical = (edit_form_vals["profile-medical"].value);
+    console.log("medical to change to: " + medical)
+
+    if (medical) {
+
+        firebase.database().ref().child("users").child(global_user.uid).child("medical").set(medical).catch((err) => {
+            console.log("Could not add to db")
+        })
+    } else {
+        console.log("medical in profile edit form is null")
+    }
+
+
+
+
+    //to prevent reload
+    e.preventDefault()
+
+});

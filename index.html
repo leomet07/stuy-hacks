@@ -105,13 +105,26 @@
             <ul id="emercontacts">
             </ul>
         </div>
-        <button onclick="toggle_edit_page()" id="editbtn">Edit Profile</button>
+        <button onclick="toggle_edit_page()" id="editbtn" class="btn black darken-2 z-depth-0 shadow-2 grow">Edit
+            Profile</button>
         <div id="editprofile">
             <h1>Edit your profile</h1>
             <form id="editforms">
                 <input style="background-color: #f0f0f0; border-width:0px; border:none;"
-                    class="br2 shadow-2 w7 h2 black pl2 pr2 mb1 input-field" type="email" id="login-email"
-                    placeholder="Edit username" required />
+                    class="br2 shadow-2 w7 h2 black pl2 pr2 mb1 input-field" type="text" id="profile-username"
+                    placeholder="Edit username" />
+                <br>
+                <input style="background-color: #f0f0f0; border-width:0px; border:none;"
+                    class="br2 shadow-2 w7 h2 black pl2 pr2 mb1 input-field" type="text" id="profile-emerphones"
+                    placeholder="Edit emerphones" />
+                <br>
+                <input style="background-color: #f0f0f0; border-width:0px; border:none;"
+                    class="br2 shadow-2 w7 h2 black pl2 pr2 mb1 input-field" type="text" id="profile-medical"
+                    placeholder="Edit medical info" />
+                <br>
+                <button class="btn btn-primary darken-2 z-depth-0">
+                    Submit
+                </button>
             </form>
 
 
